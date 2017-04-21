@@ -28,9 +28,11 @@ module.exports = function (file, settings) {
     bundler.transform(compiler(file,relativeTo));
 
     if(settings.es2015 && settings.es2015.enable) {
-        bundler.transform(babelify.configure({presets: settings.es2015.presets}));
+        var es2015 = JSON.parse(JSON.stringify(settings.es2015));
+        delete es2015.enable;
+        bundler.transform(babelify.configure(es2015));
     }
-
+    
     bundler.transform(debowerify); //注意上面的操作都处理完后再支持bower，否则会出错
 
     // 寻找依赖文件
